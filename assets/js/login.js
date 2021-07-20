@@ -39,10 +39,11 @@ $(function () {
 
     // 发起ajax请求
     // 注册
-    var data = { username: $('#form_reg [name=username]').val(), password: $('#form_reg [name=password]').val() }
     $('#form_reg').on('submit', function (e) {
         e.preventDefault()
+        var data = { username: $('#form_reg [name=username]').val(), password: $('#form_reg [name=password]').val() }
         $.post('/api/reguser', data, function (res) {
+            console.log(res);
             if (res.status !== 0) {
                 return layer.msg(res.message);
             } else {
@@ -52,16 +53,17 @@ $(function () {
         })
     })
     // 登录
-    var data = $(this).serialize()
     $('#form_login').on('submit', function (e) {
         e.preventDefault()
+        var data = $(this).serialize()
         $.post('/api/login', data, function (res) {
+            console.log(res);
             if (res.status !== 0) {
                 return layer.msg('登录失败！');
             } else {
                 layer.msg('登录成功！')
                 // 将登录成功token字符串，保存到localStorage中
-                localStorage.setItem('token', 'res.token')
+                localStorage.setItem('token', res.token)
                 location.href = '/index.html'
             }
         })
